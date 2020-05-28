@@ -1,2 +1,0 @@
-# AlertController
-For git learning.
