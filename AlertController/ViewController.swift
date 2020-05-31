@@ -59,5 +59,14 @@ class ViewController: UIViewController {
         
         present(alert, animated: true, completion: nil)
     }
+    
+    @IBAction func nextButton(_ sender: UIButton) {
+        let storyboard = UIStoryboard(name: Constants.storyboardID, bundle: nil)
+        guard let vc = storyboard.instantiateViewController(identifier: Constants.inputAndAccessoryViewControllerID) as? InputAndAccessoryViewController else { return }
+        
+//        self.present(vc, animated: true) // Show modal.
+        self.show(vc, sender: nil)
+        
+    }
 }
 
