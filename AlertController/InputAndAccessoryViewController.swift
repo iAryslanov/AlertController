@@ -53,5 +53,4 @@ class InputAndAccessoryViewController: UIViewController {
         dateTextField.text = formatter.string(from: datePicker.date)
         self.view.endEditing(true)
     }
-    
 }
