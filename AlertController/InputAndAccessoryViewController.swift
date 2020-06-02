@@ -14,7 +14,6 @@ class InputAndAccessoryViewController: UIViewController {
     
     @IBOutlet weak var dateTextField: UITextField!
     let datePicker = UIDatePicker()
-    
     @IBOutlet weak var kindTextField: UITextField!
     
     override func viewDidLoad() {
@@ -22,6 +21,7 @@ class InputAndAccessoryViewController: UIViewController {
         
         createDatePicker()
         createKindPickerView()
+        
     }
     
     func createDatePicker() {
@@ -37,20 +37,6 @@ class InputAndAccessoryViewController: UIViewController {
 //        datePicker.locale = Locale(identifier: localeID!)
         
         datePicker.locale = Locale(identifier: Locale.preferredLanguages.first!)
-        
-        // Toolbar.
-        let toolbar = UIToolbar()
-        toolbar.sizeToFit()
-        
-        // Bar button.
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dateDonePressed))
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        doneButton.style = .plain
-        
-        toolbar.setItems([flexSpace, doneButton], animated: true)
-        
-        // Assign toolbar.
-//        dateTextField.inputAccessoryView = toolbar
         
         // Config format of date.
         let formatter = DateFormatter()
@@ -68,13 +54,7 @@ class InputAndAccessoryViewController: UIViewController {
         datePicker.maximumDate = maxDate
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGestureDone))
-        self.view.addGestureRecognizer(tapGesture)
-    }
-    
-    @objc
-    func dateDonePressed() {
-//        getDateFromPicker()
-        self.view.endEditing(true)
+        self.view.addGestureRecognizer(tapGesture) // Dismiss datePicker or kindPicker.
     }
     
     @objc
@@ -100,6 +80,7 @@ class InputAndAccessoryViewController: UIViewController {
         kindTextField.placeholder = "Touch me"
         
         let kindPickerView = UIPickerView()
+        kindPickerView.dataSource = self
         kindPickerView.delegate = self
         
         
@@ -108,11 +89,11 @@ class InputAndAccessoryViewController: UIViewController {
         toolbar.sizeToFit()
         
         // Bar buttons.
-        let upButton = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: nil)
+        let closeButton = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: nil)
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(kinkDonePressed))
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(kindDonePressed))
         doneButton.style = .plain
-        toolbar.setItems([upButton, flexSpace, doneButton], animated: true)
+        toolbar.setItems([closeButton, flexSpace, doneButton], animated: true)
         toolbar.isUserInteractionEnabled = true
         
         // Assign toolbar.
@@ -131,13 +112,9 @@ class InputAndAccessoryViewController: UIViewController {
     }
     
     @objc
-    func kinkDonePressed() {
+    func kindDonePressed() {
         view.endEditing(true)
     }
-    
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        self.view.endEditing(true) // Dismiss the date picker.
-//    }
 }
 
 extension InputAndAccessoryViewController: UIPickerViewDataSource, UIPickerViewDelegate {
@@ -157,6 +134,10 @@ extension InputAndAccessoryViewController: UIPickerViewDataSource, UIPickerViewD
         return kind[row]
     }
     
+//    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+//        <#code#>
+//    }
+    
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         var pickerViewLabel = UILabel()
         
@@ -165,7 +146,8 @@ extension InputAndAccessoryViewController: UIPickerViewDataSource, UIPickerViewD
         } else {
             pickerViewLabel = UILabel()
         }
-        
+
+        pickerViewLabel.backgroundColor = #colorLiteral(red: 0, green: 0.6886182427, blue: 0, alpha: 1)
         pickerViewLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         pickerViewLabel.textAlignment = .center
         pickerViewLabel.font = UIFont(name: "Noteworthy", size: 20)
